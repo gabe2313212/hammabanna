@@ -4,10 +4,6 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.m
 // HAMMABANNA
 // ======================================================
 
-// ------------------------------
-// GAME SETTINGS
-// ------------------------------
-
 const WORLD_AREA = 10_000_000;
 const WORLD_SIZE = Math.sqrt(WORLD_AREA);
 const HALF_WORLD = WORLD_SIZE / 2;
@@ -70,7 +66,10 @@ renderer.setSize(
 );
 
 renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 1.5)
+    Math.min(
+        window.devicePixelRatio,
+        1.5
+    )
 );
 
 renderer.shadowMap.enabled = true;
@@ -125,7 +124,7 @@ scene.add(sun);
 function makeMaterial(color) {
 
     return new THREE.MeshStandardMaterial({
-        color: color,
+        color,
         roughness: 0.9
     });
 }
@@ -209,13 +208,9 @@ for (
     patch.add(blade2);
 
     patch.position.set(
-        (Math.random() - 0.5) *
-            GRASS_AREA,
-
+        (Math.random() - 0.5) * GRASS_AREA,
         0,
-
-        (Math.random() - 0.5) *
-            GRASS_AREA
+        (Math.random() - 0.5) * GRASS_AREA
     );
 
     const scale =
@@ -229,8 +224,7 @@ for (
     );
 
     patch.rotation.y =
-        Math.random() *
-        Math.PI;
+        Math.random() * Math.PI;
 
     grassGroup.add(patch);
 }
@@ -298,7 +292,6 @@ const body =
     );
 
 body.position.y = 3;
-
 body.castShadow = true;
 
 car.add(body);
@@ -318,7 +311,6 @@ const lowerBody =
     );
 
 lowerBody.position.y = 1.8;
-
 lowerBody.castShadow = true;
 
 car.add(lowerBody);
@@ -703,7 +695,7 @@ window.addEventListener(
 );
 
 // ======================================================
-// PIGS
+// PIG CREATION
 // ======================================================
 
 const pigs = [];
@@ -863,7 +855,7 @@ function createPig(
     ];
 
     for (
-        const legPosition of legPositions
+        const positionData of legPositions
     ) {
 
         const leg =
@@ -878,9 +870,9 @@ function createPig(
             );
 
         leg.position.set(
-            legPosition[0],
-            legPosition[1],
-            legPosition[2]
+            positionData[0],
+            positionData[1],
+            positionData[2]
         );
 
         leg.castShadow = true;
@@ -954,7 +946,7 @@ function randomPigPosition() {
 }
 
 // ======================================================
-// CREATE NORMAL PIGS
+// CREATE PIGS
 // ======================================================
 
 for (
@@ -1148,16 +1140,17 @@ window.addEventListener(
     event => {
 
         if (
-            event.button === 0
+            event.button !== 0
         ) {
-
-            mouseHeld = true;
-
-            lastShot =
-                performance.now();
-
-            fireCannonball();
+            return;
         }
+
+        mouseHeld = true;
+
+        lastShot =
+            performance.now();
+
+        fireCannonball();
     }
 );
 
@@ -1175,7 +1168,7 @@ window.addEventListener(
 );
 
 window.addEventListener(
-    "mouseleave",
+    "blur",
     () => {
 
         mouseHeld = false;
@@ -1195,7 +1188,8 @@ function updateShooting() {
         1000 / FIRE_RATE;
 
     if (
-        now - lastShot >= delay
+        now - lastShot >=
+        delay
     ) {
 
         lastShot = now;
@@ -1205,7 +1199,7 @@ function updateShooting() {
 }
 
 // ======================================================
-// KILL SYSTEM
+// KILL COUNTER
 // ======================================================
 
 let pigsKilled = 0;
@@ -1224,6 +1218,10 @@ function updateKillCounter() {
     }
 }
 
+// ======================================================
+// KILL PIG
+// ======================================================
+
 function killPig(pig) {
 
     if (
@@ -1233,13 +1231,12 @@ function killPig(pig) {
         return;
     }
 
-    pig.userData.alive = false;
+    pig.userData.alive =
+        false;
 
     pigsKilled++;
 
     updateKillCounter();
-
-    // Knock pig over
 
     pig.rotation.x =
         Math.random() * 1.5;
@@ -1249,8 +1246,6 @@ function killPig(pig) {
 
     pig.position.y = 1;
 
-    // Hide after 5 seconds
-
     setTimeout(
         () => {
 
@@ -1259,8 +1254,6 @@ function killPig(pig) {
         },
         5000
     );
-
-    // Respawn after 5.5 seconds
 
     setTimeout(
         () => {
@@ -1287,8 +1280,6 @@ function killPig(pig) {
         },
         5500
     );
-
-    // Start boss
 
     if (
         pigsKilled >=
@@ -1340,8 +1331,6 @@ function startBoss() {
 
     bossStarted = true;
 
-    // Hide normal pigs
-
     for (
         const pig of pigs
     ) {
@@ -1378,7 +1367,7 @@ function startBoss() {
 }
 
 // ======================================================
-// DAMAGE BIG P
+// DAMAGE BOSS
 // ======================================================
 
 function damageBoss() {
@@ -1486,7 +1475,7 @@ function showMessage(text) {
 }
 
 // ======================================================
-// COLLISIONS
+// COLLISION CHECK
 // ======================================================
 
 function checkCannonballHits() {
@@ -1572,7 +1561,7 @@ function checkCannonballHits() {
             continue;
         }
 
-        // Remove old cannonballs
+        // LIFETIME
 
         if (
             performance.now() -
@@ -1626,8 +1615,6 @@ function updateCar(delta) {
     const right =
         keys["d"];
 
-    // ACCELERATION
-
     if (forward) {
 
         carSpeed +=
@@ -1654,8 +1641,6 @@ function updateCar(delta) {
             MAX_SPEED
         );
 
-    // STEERING
-
     if (
         Math.abs(carSpeed) > 1
     ) {
@@ -1681,8 +1666,6 @@ function updateCar(delta) {
             );
     }
 
-    // MOVE
-
     const direction =
         new THREE.Vector3(
             0,
@@ -1699,8 +1682,6 @@ function updateCar(delta) {
             carSpeed * delta
         )
     );
-
-    // WORLD LIMIT
 
     const limit =
         HALF_WORLD - 100;
@@ -1719,21 +1700,15 @@ function updateCar(delta) {
             limit
         );
 
-    // SUSPENSION BOUNCE
-
     car.position.y =
         2 +
         Math.sin(
-            performance.now() *
-                0.008
+            performance.now() * 0.008
         ) *
         Math.min(
-            Math.abs(carSpeed) /
-                100,
+            Math.abs(carSpeed) / 100,
             0.12
         );
-
-    // WHEEL ROTATION
 
     for (
         const wheel of wheels
@@ -1815,8 +1790,7 @@ function updateGrassVisibility() {
 
         patch.visible =
             distanceSquared <
-            maxDistance *
-            maxDistance;
+            maxDistance * maxDistance;
     }
 }
 
@@ -1826,8 +1800,7 @@ function updateGrassVisibility() {
 
 function recycleGrass() {
 
-    const recycleDistance =
-        800;
+    const recycleDistance = 800;
 
     for (
         const patch of
@@ -1923,12 +1896,13 @@ window.addEventListener(
             Math.min(
                 window.devicePixelRatio,
                 1.5
-            );
+            )
+        );
     }
 );
 
 // ======================================================
-// GAME LOOP
+// MAIN GAME LOOP
 // ======================================================
 
 const clock =
