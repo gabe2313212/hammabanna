@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>hammabanna</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+    <div id="game">
+
+        <!-- =========================
+             HUD
+        ========================== -->
+
+        <div id="hud">
+
+            <h1>🐷 HAMMABANNA</h1>
+
+            <p>
+                Pigs Killed:
+                <span id="killCount">0</span>
+                / 500
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             BOSS UI
+        ========================== -->
+
+        <div id="bossUI">
+
+            <h2>👑 BIG P</h2>
+
+            <div id="bossBar">
+
+                <div id="bossHealth"></div>
+
+            </div>
+
+            <p>
+                <span id="bossHealthText">
+                    1,000,000
+                </span>
+                / 1,000,000 HP
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             GAME MESSAGE
+        ========================== -->
+
+        <div id="message"></div>
+
+
+        <!-- =========================
+             CONTROLS
+        ========================== -->
+
+        <div id="controls">
+
+            <strong>CONTROLS</strong><br>
+
+            W A S D — Drive<br>
+
+            Mouse — Aim<br>
+
+            Hold Left Click — Fire
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         GAME JAVASCRIPT
+    ========================== -->
+
+    <script
+        type="module"
+        src="game.js"
+    ></script>
+
+</body>
+
+</html>
